@@ -1,0 +1,17 @@
+{
+  "name": "susbot",
+  "version": "1.0.0",
+  "description": "funny bot idk",
+  "main": "index.js",
+  "scripts": {
+    "test": "joe"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^14.7.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.33.0"
+  }
+}
