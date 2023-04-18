@@ -1,3 +1,5 @@
+// If you want the bot to work properly, create a file ".env" in the same directory, and write "TOKEN = 'your bots token'", "GUILD_ID = 'the server id'". and "CLIENT_ID = 'your bots client id;"
+
 require('dotenv').config();
 const { Client, IntentsBitField, ActivityType, discordSort } = require('discord.js');
 
