@@ -1,17 +1,23 @@
 {
   "name": "susbot",
-  "version": "1.0.0",
-  "description": "funny bot idk",
+  "version": "0.1.0",
+  "description": "stupid lil bot",
   "main": "index.js",
   "scripts": {
-    "test": "joe"
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BojayB/SUSbot.git"
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "discord.js": "^14.7.1"
+  "bugs": {
+    "url": "https://github.com/BojayB/SUSbot/issues"
   },
-  "devDependencies": {
-    "eslint": "^8.33.0"
+  "homepage": "https://github.com/BojayB/SUSbot#readme",
+  "dependencies": {
+    "discord.js": "^14.9.0",
+    "dotenv": "^16.0.3"
   }
 }
