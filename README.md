@@ -6,15 +6,13 @@
 - [x] ~~Timeout command~~
 - [ ] Self roles
 - [ ] Welcome/Boost messages
-- 
-- 
 - [ ] Channel creation/deletion
-- [ ] Database
+- [ ] Advanced commands and events handler
+- [x] ~~Database~~
   - [ ] Level system
     - [ ] Currency
       - [ ] Something else?
         - [ ] Per-server config? 
--
 - 
 - 
 - 
