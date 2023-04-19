@@ -1,7 +1,7 @@
 // If you want the bot to work properly, create a file ".env" in the same directory, and write "TOKEN = 'your bots token'", "GUILD_ID = 'the server id'". and "CLIENT_ID = 'your bots client id;"
 
 require('dotenv').config();
-const { Client, IntentsBitField, ActivityType, discordSort } = require('discord.js');
+const { Client, IntentsBitField, ActivityType, discordSort, PermissionFlagsBits } = require('discord.js');
 
 const client = new Client({
 intents: [
@@ -33,7 +33,9 @@ client.on('ready', (c) => {
     }, 7000);
 });
 
-client.on('interactionCreate', (interaction) => {
+const logChannel = '1098029966882517042'
+
+client.on('interactionCreate', async (interaction) => {
     if (!interaction.isChatInputCommand()) return;
 
     if (interaction.commandName === 'password') {
@@ -75,6 +77,41 @@ client.on('interactionCreate', (interaction) => {
             interaction.reply(`WRONG ANSWER`)
           }
     }
+
+    if (interaction.commandName === 'ban') {
+
+        const targetUserId = interaction.options.get('user').value;
+        const reason = interaction.options.get('reason')?.value || "No reason given";
+
+        await interaction.deferReply();
+
+        const targetUser = await interaction.guild.members.fetch(targetUserId);
+
+        if (!targetUser) {
+            interaction.editReply("User does not exist.");
+            return;
+        }
+
+        if (targetUser.id === interaction.guild.ownerId) {
+            interaction.editReply("Nice try, idiot.")
+        }
+
+        if (!targetUser.bannable) {
+            interaction.editReply("You are not allowed to ban this member.")
+            return;
+        }
+
+        try {
+            targetUser.ban({ reason });
+            interaction.editReply(`${targetUser} was banned.\nReason: ${reason}`);
+        }
+        catch (error) {
+            interaction.editReply(`An error has occurred: ${error}`);
+            console.log(`Error moment: ${error}`)
+        }
+
+    }   
+
 });
 
 
