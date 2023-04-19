@@ -18,6 +18,9 @@
   "homepage": "https://github.com/BojayB/SUSbot#readme",
   "dependencies": {
     "discord.js": "^14.9.0",
-    "dotenv": "^16.0.3"
+    "dotenv": "^16.0.3",
+    "mongoose": "^7.0.4",
+    "ms": "^2.1.3",
+    "pretty-ms": "^8.0.0"
   }
 }

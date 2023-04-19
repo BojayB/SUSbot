@@ -2,6 +2,8 @@
 
 require('dotenv').config();
 const { Client, IntentsBitField, ActivityType, discordSort, PermissionFlagsBits } = require('discord.js');
+const ms = require('ms');
+const mongoose = require('mongoose');
 
 const client = new Client({
 intents: [
@@ -33,8 +35,20 @@ client.on('ready', (c) => {
     }, 7000);
 });
 
-const logChannel = '1098029966882517042'
+// const logChannel = '1098029966882517042'
 
+// mongodb?
+(async () => {
+    try {
+        await mongoose.connect(process.env.MONGODB_URI, { keepAlive: true });
+        console.log('Connected to DB.');
+
+    } catch (error) {
+        console.log(`DB error: ${error}`);
+    }
+})();
+
+// commands
 client.on('interactionCreate', async (interaction) => {
     if (!interaction.isChatInputCommand()) return;
 
@@ -81,7 +95,7 @@ client.on('interactionCreate', async (interaction) => {
     if (interaction.commandName === 'ban') {
 
         const targetUserId = interaction.options.get('user').value;
-        const reason = interaction.options.get('reason')?.value || "No reason given";
+        const reason = interaction.options.get('reason')?.value || "No reason given.";
 
         await interaction.deferReply();
 
@@ -112,6 +126,103 @@ client.on('interactionCreate', async (interaction) => {
 
     }   
 
+
+    if (interaction.commandName === 'kick') {
+
+        const targetUserId = interaction.options.get('user').value;
+        const reason = interaction.options.get('reason')?.value || "No reason given.";
+
+        await interaction.deferReply();
+
+        const targetUser = await interaction.guild.members.fetch(targetUserId);
+
+        if (!targetUser) {
+            interaction.editReply("User does not exist.");
+            return;
+        }
+
+        if (targetUser.id === interaction.guild.ownerId) {
+            interaction.editReply("Nice try, idiot.")
+        }
+
+        if (!targetUser.kickable) {
+            interaction.editReply("You are not allowed to kick this member.")
+            return;
+        }
+
+        try {
+            targetUser.kick({ reason });
+            interaction.editReply(`${targetUser} was kicked.\nReason: ${reason}`);
+        }
+        catch (error) {
+            interaction.editReply(`An error has occurred: ${error}`);
+            console.log(`Error moment: ${error}`)
+        }
+
+    }   
+
+    if (interaction.commandName === 'timeout') {
+
+        
+        const targetUserId = interaction.options.get('user').value;
+        const duration = interaction.options.get('duration').value;
+        const reason = interaction.options.get('reason')?.value || "No reason given.";
+
+        await interaction.deferReply();
+
+        const targetUser = await interaction.guild.members.fetch(targetUserId);
+
+        if (!targetUser) {
+            interaction.editReply("User does not exist.");
+            return;
+        }
+
+        if (targetUser.id === interaction.guild.ownerId) {
+            interaction.editReply("Nice try, idiot.")
+        }
+
+        if (targetUser.user.bot) {
+            await interaction.editReply('You cannot time out a bot.')
+        }
+
+        if (!targetUser.kickable) {
+            interaction.editReply("You are not allowed to kick this member.")
+            return;
+        }
+
+        const msDuration = ms(duration);
+        if (isNaN(msDuration)) {
+            await interaction.editReply('That is not a valid duration.');
+            return;
+        }
+
+        if (msDuration < 5000 || msDuration > 2.419e9) {
+            await interaction.editReply('Timeout duration cannot be less than 5s or more than 28d');
+        }
+
+
+
+        try {
+            const { default: prettyMS } = await import('pretty-ms');
+
+            if (targetUser.isCommunicationDisabled()) {
+                await targetUser.timeout(msDuration, reason);
+                await interaction.editReply(`${targetUser}'s timeout duration has been updated: \n${prettyMS(msDuration)}`);
+                return;
+            }
+
+            await targetUser.timeout(msDuration, reason);
+            await interaction.editReply(`${targetUser} has been timed out for ${prettyMS(msDuration)}.\nReason: ${reason}`);
+        }
+        catch (error) {
+            interaction.editReply(`An error has occurred: ${error}`);
+            console.log(`Error moment: ${error}`)
+        }
+
+
+
+
+    }
 });
 
 
