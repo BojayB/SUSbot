@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { REST, Routes, ApplicationCommandOptionType } = require('discord.js');
+const { REST, Routes, ApplicationCommandOptionType, PermissionFlagsBits, ApplicationCommandPermissionType, ApplicationCommand } = require('discord.js');
 
 const commands = [
     {   name: 'password',
@@ -67,19 +67,35 @@ const commands = [
             },
         ],
     },
-
+    {   name: 'badge',
+        description: 'Gives Bojay B his Active Bot Discord Badge or whatever.',
+    },
+    {   name: 'input',
+        description: 'You type input, I give you your output...',
+    },
 ];
 
 const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
 
 (async () => {
+
+
+
     try {
+
+        //deletes all commands...
+        await rest.put(Routes.applicationCommands(process.env.CLIENT_ID, process.env.GUILD_ID), { body: [] })
+        .then(() => console.log('Successfully deleted all application commands.'))
+        .catch(console.error);
+
         console.log(`Regieristeiring your mom`);
 
+        //...then registers all commands. Not sure if there's an easier way, but without this all registered commands are still available in discord even after being removed in this file.
         await rest.put(
             Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID),
             { body: commands }
         );
+
 
         console.log(`Your mother has been successfully regieristeired`)
     }   catch (error) {
