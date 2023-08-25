@@ -1,7 +1,7 @@
 # SUSbot
  Funny lil WIP discord bot idk if I'll ever finish
 
-#PLANS (Higher on the list = higher priority)
+# PLANS (Higher on the list = higher priority)
 - [x] ~~Kick command~~
 - [x] ~~Timeout command~~
 - [ ] Self roles
