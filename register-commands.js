@@ -1,5 +1,5 @@
 require('dotenv').config();
-const { REST, Routes, ApplicationCommandOptionType, PermissionFlagsBits, ApplicationCommandPermissionType, ApplicationCommand } = require('discord.js');
+const { REST, Routes, ApplicationCommandOptionType, PermissionFlagsBits, ApplicationCommandPermissionType, ApplicationCommand, ApplicationCommandOptionWithChoicesAndAutocompleteMixin } = require('discord.js');
 
 const commands = [
     {   name: 'password',
@@ -72,6 +72,39 @@ const commands = [
     },
     {   name: 'input',
         description: 'You type input, I give you your output...',
+    },
+    {   name: 'channel_create',
+        description: 'Create a channel',
+        options:[
+            {
+                name: 'name',
+                description: 'The channels name',
+                type: ApplicationCommandOptionType.String,
+                required: true,
+            },
+            {
+                name: 'type',
+                description: 'What type of channel?',
+                choices:[
+                    { name: 'Text', value: 0},
+                    { name: 'Voice', value: 1},
+                    { name: 'Announcements', value: 2},
+                ],
+                type: ApplicationCommandOptionType.Integer,
+                required: true,
+            },
+        ],
+    },
+    {   name: 'channel_delete',
+        description: 'Deletes channel lol',
+        options: [
+            {
+            name: 'channel',
+            description: 'Channel Name',
+            type: ApplicationCommandOptionType.Channel,
+            required: true,
+            },
+        ],
     },
 ];
 

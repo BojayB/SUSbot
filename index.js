@@ -1,7 +1,7 @@
 // If you want the bot to work properly, create a file ".env" in the same directory, and write "TOKEN = 'your bots token'", "GUILD_ID = 'the server id'". and "CLIENT_ID = 'your bots client id;"
 
 require('dotenv').config();
-const { Client, IntentsBitField, ActivityType, discordSort, PermissionFlagsBits, EmbedBuilder } = require('discord.js');
+const { Client, IntentsBitField, ActivityType, discordSort, PermissionFlagsBits, EmbedBuilder, ChannelType, Guild, GuildChannel } = require('discord.js');
 const ms = require('ms');
 const mongoose = require('mongoose');
 
@@ -41,7 +41,7 @@ client.on('ready', (c) => {
 // const logChannel = '1098029966882517042'
 
 // mongodb?
-(async () => {
+/*(async () => {
     try {
         await mongoose.connect(process.env.MONGODB_URI, { keepAlive: true });
         console.log('Connected to DB.');
@@ -49,13 +49,17 @@ client.on('ready', (c) => {
     } catch (error) {
         console.log(`MongoDB could not connect: ${error}`);
     }
-})();
+})();*/
+
+
+
+
 
 // COMMANDS
 client.on('interactionCreate', async (interaction) => {
     if (!interaction.isChatInputCommand()) return;
 
-    if (interaction.commandName === 'password') {
+   /*if (interaction.commandName === 'password') {
         const pass = interaction.options.get('password').value;
 
           if (pass === 'kkknougamer3') {
@@ -93,7 +97,7 @@ client.on('interactionCreate', async (interaction) => {
           else {
             interaction.reply(`WRONG ANSWER`)
           }
-    }
+    }*/
 
     if (interaction.commandName === 'ban') {
 
@@ -140,8 +144,7 @@ client.on('interactionCreate', async (interaction) => {
             console.log(`Error moment: ${error}`)
         }
 
-    }   
-
+    }
 
     if (interaction.commandName === 'kick') {
 
@@ -255,6 +258,30 @@ client.on('interactionCreate', async (interaction) => {
         await interaction.deferReply();
         await interaction.editReply(`<@${badges}>`)
     } 
+
+    if (interaction.commandName === 'channel_create'){
+        const channelName = interaction.options.get('name').value;
+        const channelType = interaction.options.get('type').value;
+        
+        const channelTypes = [ChannelType.GuildText, ChannelType.GuildVoice, ChannelType.GuildAnnouncement]
+
+        interaction.guild.channels.create(
+        {
+            name: `${channelName}`,
+            type: channelTypes[channelType]
+        },
+        ).then(channel => (interaction.reply(`Channel Created! <#${channel.id}>`)))
+        .catch(console.error);
+    }
+    
+    if (interaction.commandName === 'channel_delete'){
+        const channelName = interaction.options.get('channel').value
+        interaction.guild.channels.delete(channelName)
+        .then (interaction.reply(`Channel deleted!`))
+        .catch(console.error)
+    
+    
+    }   
 });
 
 
