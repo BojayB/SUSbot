@@ -59,46 +59,6 @@ client.on('ready', (c) => {
 client.on('interactionCreate', async (interaction) => {
     if (!interaction.isChatInputCommand()) return;
 
-   /*if (interaction.commandName === 'password') {
-        const pass = interaction.options.get('password').value;
-
-          if (pass === 'kkknougamer3') {
-            interaction.reply('How do you know this password?');
-          }
-
-          if (pass === 'brbmlpfimismyfaveshowforever69696niggerkkknougamer3') {
-            interaction.reply(`I have no idea how you know this one, it's 51 characters long...`)
-          }
-
-          if (pass === 'iamliterallybojaybgivemeadmin') {
-            interaction.reply(`Based, you've entered the right password. Here is the highest role I am literally able to give you. You can give yourself the rest :)`)
-          }
-
-          if (pass === 'DerpyHooves') {
-            interaction.reply(`Old news.`)
-          }
-
-          if (pass === 'DerpyHooves12') {
-            interaction.reply(`Less old news. Try adding more numbers.`)
-          }
-
-          if (pass === 'DerpyHooves1234') {
-            interaction.reply(`Nice try, Dumbass.`)
-          }
-
-          if (pass === 'DerpyHooves13') {
-            interaction.reply(`Close, yet so far.`)
-          }
-
-          if (pass === 'DerpyHooves14') {
-            interaction.reply(`I won't go any higher.`)
-          }
-
-          else {
-            interaction.reply(`WRONG ANSWER`)
-          }
-    }*/
-
     if (interaction.commandName === 'ban') {
 
         const targetUserId = interaction.options.get('user').value;
