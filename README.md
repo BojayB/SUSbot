@@ -6,7 +6,7 @@
 - [x] ~~Timeout command~~
 - [ ] Self roles
 - [ ] Welcome/Boost messages
-- [ ] Channel creation/deletion
+- [x] Channel creation/deletion
 - [ ] Advanced commands and events handler
 - [x] ~~Database~~
   - [ ] Level system
