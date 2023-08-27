@@ -235,12 +235,17 @@ client.on('interactionCreate', async (interaction) => {
     }
     
     if (interaction.commandName === 'channel_delete'){
+        //check if user has a specific role (get said role id)
+        const adminRole = interaction.guild.roles.cache.find(role => role.name === 'Mythic');
+        if (!interaction.member.roles.cache.has(adminRole.id)) {
+            interaction.reply('You are unable to delete channels ;)')
+            return;
+        }
         const channelName = interaction.options.get('channel').value
         interaction.guild.channels.delete(channelName)
-        .then (interaction.reply(`Channel deleted!`))
-        .catch(console.error)
-    
-    
+        .then (interaction.reply('Channel deleted!'))
+        .catch(console.error)    
+        console.log()
     }   
 });
 
