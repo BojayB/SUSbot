@@ -1,7 +1,7 @@
 // If you want the bot to work properly, create a file ".env" in the same directory, and write "TOKEN = 'your bots token'", "GUILD_ID = 'the server id'". and "CLIENT_ID = 'your bots client id;"
 
 require('dotenv').config();
-const { Client, IntentsBitField, ActivityType, discordSort, PermissionFlagsBits, EmbedBuilder, ChannelType, Guild, GuildChannel } = require('discord.js');
+const { Client, IntentsBitField, ActivityType, discordSort, PermissionFlagsBits, EmbedBuilder, ChannelType, Guild, GuildChannel, DMChannel } = require('discord.js');
 const ms = require('ms');
 const mongoose = require('mongoose');
 
@@ -11,17 +11,18 @@ intents: [
     IntentsBitField.Flags.GuildMembers,
     IntentsBitField.Flags.GuildMessages,
     IntentsBitField.Flags.MessageContent,
+    IntentsBitField.Flags.DirectMessages,
 ],
 });
 
 let status = [
     {
-        name: 'BOJAY B SASAGEYO ON FIRMWARE 2.1!!! | NOT CLICKBAIT',
+        name: 'New Val Map: SUNSET, Shipping With Patch 7.04!',
         type: ActivityType.Streaming,
         url: `https://www.youtube.com/watch?v=5TuJdzOMaRg`,
     },
     {
-        name: `your mom's bedroom with your brother and sister`,
+        name: `VCT 2023`,
         type: ActivityType.Competing,
     },
 ] 
@@ -50,6 +51,8 @@ client.on('ready', (c) => {
         console.log(`MongoDB could not connect: ${error}`);
     }
 })();*/
+
+//Welcome message
 
 
 
@@ -219,9 +222,15 @@ client.on('interactionCreate', async (interaction) => {
         await interaction.editReply(`<@${badges}>`)
     } 
 
-    if (interaction.commandName === 'channel_create'){
+    if (interaction.commandName === 'channel'){
+        if (interaction.options.getSubcommand() === 'create'){
         const channelName = interaction.options.get('name').value;
         const channelType = interaction.options.get('type').value;
+        const adminRole = interaction.guild.roles.cache.find(role => role.name === 'Mythic');
+        if (!interaction.member.roles.cache.has(adminRole.id)) {
+            interaction.reply('You are unable to create channels ;)')
+            return;
+        }
         
         const channelTypes = [ChannelType.GuildText, ChannelType.GuildVoice, ChannelType.GuildAnnouncement]
 
@@ -232,9 +241,8 @@ client.on('interactionCreate', async (interaction) => {
         },
         ).then(channel => (interaction.reply(`Channel Created! <#${channel.id}>`)))
         .catch(console.error);
-    }
-    
-    if (interaction.commandName === 'channel_delete'){
+        }
+        if (interaction.options.getSubcommand() === 'delete'){
         //check if user has a specific role (get said role id)
         const adminRole = interaction.guild.roles.cache.find(role => role.name === 'Mythic');
         if (!interaction.member.roles.cache.has(adminRole.id)) {
@@ -246,7 +254,67 @@ client.on('interactionCreate', async (interaction) => {
         .then (interaction.reply('Channel deleted!'))
         .catch(console.error)    
         console.log()
-    }   
+        }
+    }
+    
+    if (interaction.commandName === 'reputation'){
+    let funnyNameArray = [' ',];
+    let funnyNameArrayValue = [' ',];
+
+    if (interaction.options.getSubcommand() === 'add'){
+        const repUser = interaction.options.get('user').value;
+        const repValue = interaction.options.get('amount').value;
+        if (!repUser.indexOf(funnyNameArray)){
+            funnyNameArray.push(repUser);
+            funnyNameArrayValue.push(repValue);
+            interaction.reply(`+${repValue} rep for <@${repUser}>`)
+            console.log(funnyNameArray, funnyNameArrayValue)
+            return;
+        }
+        if (repUser.indexOf(funnyNameArray)){
+            const funnyDifference = funnyNameArrayValue + repValue;
+            funnyNameArrayValue.splice([repUser, funnyDifference]);
+            interaction.reply(`+${repValue} rep for <@${repUser}>`)
+            console.log(funnyNameArray, funnyNameArrayValue)
+            return;
+        }
+        
+    }
+
+    if (interaction.options.getSubcommand() === 'check'){
+        const repUser = interaction.options.get('user').value;
+        const repValue = funnyNameArrayValue[`${repUser}`]
+        if (!repUser.indexOf(funnyNameArray)){
+            interaction.reply('That user does not have any reputation yet!')
+            return;
+        }
+        if (repUser.indexOf(funnyNameArray)){
+            interaction.reply(`<@${repUser}> has ${repValue} rep!`)
+
+        }
+    }
+
+    if (interaction.options.getSubcommand() === 'remove'){
+        const repUser = interaction.options.get('user').value;
+        const repValue = interaction.options.get('amount').value;
+        if (!repUser.indexOf(funnyNameArray)){
+            const repNegative = repValue - repvalue*2
+            funnyNameArray.push(repUser);
+            funnyNameArrayValue.push(repNegative);
+            interaction.reply(`<@${repUser}> lost -${repValue})`)
+            console.log(funnyNameArray, funnyNameArrayValue)
+            return;
+        }
+        if (repUser.indexOf(funnyNameArray)){
+            const funnyDifference = funnyNameArrayValue + repValue;
+            funnyNameArrayValue.splice([repUser, funnyDifference]);
+            interaction.reply(`+${repValue} rep for <@${repUser}>`)
+            console.log(funnyNameArray, funnyNameArrayValue)
+            return;
+        }    
+    }
+    }
+       
 });
 
 
