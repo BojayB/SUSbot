@@ -147,6 +147,16 @@ const commands = [
             },
         ],
     },
+ //   {   name: 'gimmerole',
+//        description: 'gives me the role',
+//        options: [
+//            {name: 'user',
+ //               description: 'The targeted user',
+   //             type: ApplicationCommandOptionType.User,
+     //           required: true,
+       //         },
+       // ],
+    //},
 ];
 
 

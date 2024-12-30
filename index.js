@@ -17,12 +17,12 @@ intents: [
 
 let status = [
     {
-        name: 'New Val Map: SUNSET, Shipping With Patch 7.04!',
+        name: 'NEW VAL AGENT ISO OUT TODAY WITH EPISODE 7 ACT 3!',
         type: ActivityType.Streaming,
         url: `https://www.youtube.com/watch?v=5TuJdzOMaRg`,
     },
     {
-        name: `VCT 2023`,
+        name: `VCT 2024`,
         type: ActivityType.Competing,
     },
 ] 
@@ -54,7 +54,11 @@ client.on('ready', (c) => {
 
 //Welcome message
 
-
+client.on('guildMemberAdd', member => {
+    const welcomeID = member.guild.channel.cache.find(channel => channel.name === '❀˖°gen-chat');
+    const welcomeMessage = 'welcomE'
+    member.welcomeMessage.send(welcomeID)
+})
 
 
 
@@ -226,7 +230,7 @@ client.on('interactionCreate', async (interaction) => {
         if (interaction.options.getSubcommand() === 'create'){
         const channelName = interaction.options.get('name').value;
         const channelType = interaction.options.get('type').value;
-        const adminRole = interaction.guild.roles.cache.find(role => role.name === 'Mythic');
+        const adminRole = interaction.guild.roles.cache.find(role => role.name === 'Owner');
         if (!interaction.member.roles.cache.has(adminRole.id)) {
             interaction.reply('You are unable to create channels ;)')
             return;
@@ -244,7 +248,7 @@ client.on('interactionCreate', async (interaction) => {
         }
         if (interaction.options.getSubcommand() === 'delete'){
         //check if user has a specific role (get said role id)
-        const adminRole = interaction.guild.roles.cache.find(role => role.name === 'Mythic');
+        const adminRole = interaction.guild.roles.cache.find(role => role.name === 'Owner');
         if (!interaction.member.roles.cache.has(adminRole.id)) {
             interaction.reply('You are unable to delete channels ;)')
             return;
@@ -314,7 +318,13 @@ client.on('interactionCreate', async (interaction) => {
         }    
     }
     }
-       
+    
+    if (interaction.commandName === 'gimmerole'){
+        
+        const user = interaction.options.get('user').value;
+
+        await interaction.member.roles.add('1074449992795820154')
+    }
 });
 
 
